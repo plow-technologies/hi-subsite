@@ -1,5 +1,7 @@
 # $packageName
 
+$packageName was initialized with hi-subtemplate, it uses persistent-mongoDB== 2.1.3.7569 as its default persistent version
+This may be important for your project.
 TODO: Write description here
 
 ## Installation
