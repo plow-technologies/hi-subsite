@@ -3,18 +3,21 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
 {-# LANGUAGE TemplateHaskell       #-}
-{-# OPTIONS_GHC -fno-warn-orphans #-} -- ${moduleName}.Internal is where the parent lives but because of stage restriction it needs to be instanciated here
+{-# OPTIONS_GHC -fno-warn-orphans #-} -- $moduleName.Internal is where the parent lives but because of stage restriction it needs to be instanciated here
 
-module $moduleName ( ${moduleName}.Internal
-                   , ${moduleName} )where
+module Nothing ( module ${moduleName}.Internal
+               , module $moduleName ) where
 
-import ${moduleName}.Internal
+import           ${moduleName}.Internal
 
 import           Yesod
+
+
+
 
 -- And we'll spell out the handler type signature.
 getSubR :: Yesod master => HandlerT Sub (HandlerT master IO) Html
 getSubR = lift  (defaultLayout [whamlet|Welcome to the subsite! This template should get you started! |])
 
 instance Yesod master => YesodSubDispatch Sub (HandlerT master IO) where
-    yesodSubDispatch = $$(mkYesodSubDispatch resourcesHelloSub)
+    yesodSubDispatch = $$(mkYesodSubDispatch resourcesSub)

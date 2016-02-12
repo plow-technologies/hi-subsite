@@ -3,4 +3,29 @@ module Main where
 import $moduleName
 import Yesod
 
-main = warp 3000  (Master HelloSub)
+-- And let's create a master site that calls it.
+data Master = Master
+    { getSub :: Sub
+    }
+
+mkYesod "Master" [parseRoutes|
+/ HomeR GET
+/subsite SubsiteR Sub getSub
+|]
+
+instance Yesod Master
+
+-- Spelling out type signature again.
+getHomeR :: HandlerT Master IO Html
+getHomeR = defaultLayout
+    [whamlet|
+        <h1>Welcome to the homepage
+        <p>
+            Feel free to visit the #
+            <a href=@{SubsiteR SubR}>subsite
+            \ as well.
+    |]
+
+
+main = warp 3000  (Master Sub)
+
