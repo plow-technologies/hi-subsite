@@ -30,7 +30,7 @@ main = (shakeArgs shakeOptions{shakeFiles="_build", shakeVerbosity=Diagnostic}) 
      () <- cmd "git submodule add https://github.com/plow-technologies/onping-static.git ./static"
      cmd Shell (Cwd (takeDirectory1 out)) "bower install"
    packageExecutablePathRule = packageExecutablePath %> \out -> do
-     need [sandbox]
+     need [sandbox,packageExecutablePath]
      () <- cmd "cabal update"
      cmd "cabal install"
    packageExecutableFileRule = packageExecutableFile %> \out -> do
