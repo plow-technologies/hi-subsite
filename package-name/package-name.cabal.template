@@ -18,7 +18,9 @@ Library
                         $moduleName.Internal
 --  Other-Modules:        
   Build-Depends:        base >= 4 && < 5
--- Test Suite Code
+                      , yesod >= 1.4.1.5
+                      
+-- Test Suite Code 
                       , lens
                       , regex-genex
                       , tasty                      
@@ -33,7 +35,9 @@ executable $packageName
   GHC-Options:          -Wall
   main-is:              Main.hs
   Build-Depends:        base >= 4 && < 5
+                      , yesod
                       , $packageName
+                     
 -- Test Suite Code
                       , lens
                       , regex-genex
@@ -51,6 +55,8 @@ Test-Suite spec
   Ghc-Options:          -Wall
   Main-Is:              Spec.hs
   Build-Depends:        base
+                      , $packageName
+                      , yesod
                       , regex-genex
                       , tasty                      
                       , tasty-golden
