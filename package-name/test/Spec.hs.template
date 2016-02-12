@@ -1,4 +1,4 @@
-import ${moduleName}Spec 
+import ${moduleName}.Spec 
 import Test.Tasty
 
 main :: IO ()

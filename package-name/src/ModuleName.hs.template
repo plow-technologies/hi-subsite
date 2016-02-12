@@ -3,7 +3,7 @@
 {-# LANGUAGE OverloadedStrings     #-}
 {-# LANGUAGE QuasiQuotes           #-}
 {-# LANGUAGE TemplateHaskell       #-}
-{-# OPTIONS_GHC -fno-warn-orphans #-} -- $moduleName.Internal is where the parent lives but because of stage restriction it needs to be instanciated here
+{-# OPTIONS_GHC -fno-warn-orphans #-} -- ${moduleName}.Internal is where the parent lives but because of stage restriction it needs to be instanciated here
 
 module $moduleName ( ${moduleName}.Internal
                    , ${moduleName} )where
