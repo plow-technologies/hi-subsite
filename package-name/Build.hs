@@ -15,7 +15,7 @@ main = shakeArgs shakeOptions{shakeFiles="_build"} $ do
    wants = want ["static","static/js"]
    rules = staticRule >> jsBuildRule
    staticRule = "static" %> \_ -> do
-                  cmd "git submodule add --name static https://github.com/plow-technologies/onping-static.git ./static"
+                  cmd "git submodule add https://github.com/plow-technologies/onping-static.git ./static"
    jsBuildRule = "static/js" %> \out -> do
                   let bowerjson = takeDirectory1 out </>"bower" <.> "json"
                   need [bowerjson]
