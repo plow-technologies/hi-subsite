@@ -9,11 +9,11 @@ import           Development.Shake.Util
 
 -- main build
 main :: IO ()
-main = (shakeArgs shakeOptions{shakeFiles="_build", shakeVerbosity=Diagnostic}) do
-           wants
-           rules
+main = (shakeArgs shakeOptions{shakeFiles="_build", shakeVerbosity=Diagnostic}) execute
+
   where
    -- Build Target files and directories
+   execute = wants >> rules
    wants = want [ static
                 , packageExecutablePath
                 , packageExecutableFile
