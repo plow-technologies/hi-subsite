@@ -1,6 +1,5 @@
 #!/usr/bin/env runhaskell
 
--- stack --resolver lts-5.0 runghc --package turtle
 import           Data.Monoid
 import           Development.Shake
 import           Development.Shake.Command
@@ -12,9 +11,9 @@ main = shakeArgs shakeOptions{shakeFiles="_build"} $ do
            rules
 
   where
-   wants = want ["static","static/js"]
+   wants = want ["static/bower.json","static/js"]
    rules = staticRule >> jsBuildRule
-   staticRule = "static" %> \_ -> do
+   staticRule = "static/bower.json" %> \_ -> do
                   cmd "git submodule add https://github.com/plow-technologies/onping-static.git ./static"
    jsBuildRule = "static/js" %> \out -> do
                   let bowerjson = takeDirectory1 out </>"bower" <.> "json"
