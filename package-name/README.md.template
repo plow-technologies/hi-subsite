@@ -3,7 +3,11 @@
 TODO: Write description here
 
 ## Installation
+To initialize the submodules and get things set up run.
+```
+runhaskell Build.hs
 
+```
 TODO: Write installation instructions here
 
 ## Usage
