@@ -1,3 +1,17 @@
-module ${moduleName}.Internal
-    (
-    ) where
+{-# LANGUAGE QuasiQuotes     #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TypeFamilies    #-}
+
+module ${moduleName}.Internal where
+
+
+import           Yesod
+
+-- Subsites have foundations just like master sites.
+data Sub = Sub
+
+-- We have a familiar analogue from mkYesod, with just one extra parameter.
+-- We'll discuss that later.
+mkYesodSubData "Sub" [parseRoutes|
+/ SubR GET
+|]
