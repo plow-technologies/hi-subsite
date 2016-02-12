@@ -1,0 +1,41 @@
+#!/usr/bin/env runhaskell
+
+import           Data.Monoid
+import           Development.Shake
+import           Development.Shake.Command
+import           Development.Shake.FilePath
+import           Development.Shake.Util
+
+
+-- main build
+main :: IO ()
+main = shakeArgs shakeOptions{shakeFiles="_build", shakeVerbosity=Diagnostic} $ do
+           wants
+           rules
+  where
+   -- Build Target files and directories
+   wants = want [ static
+                , packageExecutablePath
+                , packageExecutableFile
+                , sandbox ]
+   static = "static"
+   sandbox = ".cabal-sandbox"
+   packageExecutablePath  = "dist"</>"build" </>"$packageName"
+   packageExecutableFile  =  "dist"</>"build" </>"$packageName"  </> "$packageName"
+
+
+   -- Rules
+   rules = staticRule <> packageExecutablePathRule <> packageExecutableFileRule <> sandboxRule
+   staticRule = static %> \out -> do
+     () <- cmd "git submodule add https://github.com/plow-technologies/onping-static.git ./static"
+     cmd Shell (Cwd (takeDirectory1 out)) "bower install"
+   packageExecutablePathRule = packageExecutablePath %> \out -> do
+     need [sandbox]
+     () <- cmd "cabal update"
+     cmd "cabal install"
+   packageExecutableFileRule = packageExecutableFile %> \out -> do
+     need [sandbox]
+     () <- cmd "cabal update"
+     cmd "cabal build"
+   sandboxRule = sandbox %> \_ -> cmd "cabal sandbox init"
+
