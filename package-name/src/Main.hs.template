@@ -3,4 +3,4 @@ module Main where
 import $moduleName
 import Yesod
 
-main = warp 3000 $ Master HelloSub
+main = warp 3000  (Master HelloSub)
