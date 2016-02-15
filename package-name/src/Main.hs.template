@@ -4,16 +4,21 @@
 {-# LANGUAGE TypeFamilies      #-}
 module Main where
 
-import $moduleName
-import Yesod
-
+import           $moduleName
+import           Yesod
+import           Yesod.Static
 -- And let's create a master site that calls it.
+
+$$(staticFiles "static")
+
 data Master = Master
-    { getSub :: Sub
+    { getSub     :: Sub
+    ,  getStatic :: Static
     }
 
 mkYesod "Master" [parseRoutes|
 / HomeR GET
+/static StaticR Static getStatic
 /subsite SubsiteR Sub getSub
 |]
 
@@ -21,15 +26,72 @@ instance Yesod Master
 
 -- Spelling out type signature again.
 getHomeR :: HandlerT Master IO Html
-getHomeR = defaultLayout
+getHomeR = defaultLayout $$ do
+    ( addStylesheetAttrs ( StaticR js_bootstrap_docs_assets_css_bootstrap_css) [("id","bootstrap-style")])
+    addStylesheetAttrs ( StaticR js_bootstrap_docs_assets_css_bootstrap_css) [("id","bootstrap-style")]
+    addStylesheetAttrs ( StaticR js_bootstrap_docs_assets_css_bootstrap_css) [("id","bootstrap-style")]
+    addStylesheet      ( StaticR js_bootstrap_docs_assets_css_bootstrap_responsive_css)
+    addStylesheetAttrs ( StaticR css_style_css) [("id","base-style")]
+    addStylesheetAttrs ( StaticR css_style_responsive_css) [("id","base-style-responsive")]
+    addStylesheet (StaticR css_codemirror_css)
+    addStylesheet (StaticR css_xq_light_css)
+    addStylesheet (StaticR css_select2_css)
+    addStylesheet (StaticR css_nodding_donkey_css)
+    addStylesheet (StaticR css_jquery_qtip_css)
+    addStylesheet (StaticR css_onping_table_css)
+    addScript $$ StaticR js_underscore_underscore_js
+    addScript $$ StaticR js_custom_onping_util_js
+    addScript $$ StaticR js_jquery_jquery_min_js
+    addScript $$ StaticR js_qtip2_jquery_qtip_js
+    addScript $$ StaticR js_jquery_ui_ui_minified_jquery_ui_custom_min_js
+    addScript $$ StaticR js_jquery_file_upload_js_jquery_fileupload_js
+    addScript $$ StaticR js_jquery_iframe_transport_jquery_iframe_transport_js
+    addScript $$ StaticR js_jquery_ui_ui_jquery_ui_widget_js
+    addScript $$ StaticR js_angular_angular_js
+    addScript $$ StaticR js_angular_route_angular_route_js
+    addScript $$ StaticR js_angular_sanitize_angular_sanitize_min_js
+    addScript $$ StaticR js_angular_messages_angular_messages_min_js
+    addScript $$ StaticR js_angular_resource_angular_resource_js
+    addScript $$ StaticR js_angular_ui_build_angular_ui_js
+    addScript $$ StaticR js_angular_ui_build_angular_ui_ieshiv_js
+    addScript $$ StaticR js_angular_ui_bootstrap_src_transition_transition_js
+    addScript $$ StaticR js_angular_bootstrap_ui_bootstrap_js
+    addScript $$ StaticR js_custom_dialog_dialog_js
+    addScript $$ StaticR js_angular_ui_bootstrap_src_modal_modal_js
+    addScript $$ StaticR js_codemirror_lib_codemirror_js
+    addScript $$ StaticR js_angular_ui_codemirror_ui_codemirror_js
+    addScript $$ StaticR js_codemirror_mode_pascal_pascal_js
+    addScript $$ StaticR js_select2_select2_js
+    addScript $$ StaticR js_fullcalendar_fullcalendar_min_js
+    addScript $$ StaticR js_highstock_release_highstock_src_js
+    addScript $$ StaticR js_highstock_release_highcharts_more_js
+    addScript $$ StaticR js_highstock_release_modules_exporting_src_js
+    addScript $$ StaticR js_custom_elm_runtime_js
+    addScript $$ StaticR js_moment_min_moment_min_js
+    addScript $$ StaticR js_angu_fixed_header_table_angu_fixed_header_table_js
+    -- video dash js
+    addScript $$ StaticR js_video_js_dist_video_js_video_js
+    addScript $$ StaticR js_custom_videojs_tech_dashjs_js
+    addScript $$ StaticR js_dash_js_dash_all_js
+    -- jwplayer js
+    addScript $$ StaticR js_jwplayer_jwplayer_js
+    addScript $$ StaticR js_ng_csv_build_ng_csv_js
+    -- QuickBooks API js
+    -- addScriptRemote "https://js.appcenter.intuit.com/Content/IA/intuit.ipp.anywhere-1.3.1.js"
+    addStylesheet $$ StaticR css_onping_dialog_css
+    addStylesheet $$ StaticR css_fullcalendar_css
+    addStylesheet $$ StaticR css_custom_css
+    addStylesheet $$ StaticR css_rpoc_css
     [whamlet|
-        <h1>Welcome to the homepage
-        <p>
-            Feel free to visit the #
-            <a href=@{SubsiteR SubR}>subsite
-            \ as well.
+
+            <h1>Welcome to the homepage
+            <p>
+                Feel free to visit the #
+                <a href=@{SubsiteR SubR}>subsite
+                \ as well.
     |]
 
 
-main = warp 3000  (Master Sub)
-
+main = do
+  s <- (static "static")
+  warp 3000  (Master Sub s)
