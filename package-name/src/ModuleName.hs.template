@@ -5,7 +5,7 @@
 {-# LANGUAGE TemplateHaskell       #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-} -- $moduleName.Internal is where the parent lives but because of stage restriction it needs to be instanciated here
 
-module Nothing ( module ${moduleName}.Internal
+module $moduleName ( module ${moduleName}.Internal
                , module $moduleName ) where
 
 import           ${moduleName}.Internal
